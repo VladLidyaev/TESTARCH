@@ -15,6 +15,7 @@ protocol RootScreenController: RootScreenExternalController, RootScreenInternalC
 final class RootScreenControllerImpl: RootScreenController {
   private let modelHolder: RootScreenModelHolder
   private weak var window: UIWindow?
+  private var controller: HomeScreenExternalController?
 
   init(modelHolder: RootScreenModelHolder) {
     self.modelHolder = modelHolder
@@ -22,17 +23,13 @@ final class RootScreenControllerImpl: RootScreenController {
 
   func handle(_ action: RootScreenExternalAction) {
     modifyAction(action) { [weak self] action in
-      self?.modelHolder.modify { model in
-        RootScreenEngine.process(&model, with: action)
-      }
+      self?.modifyModel(action)
     }
   }
 
   func handle(_ action: RootScreenInternalAction) {
     modifyAction(action) { [weak self] action in
-      self?.modelHolder.modify { model in
-        RootScreenEngine.process(&model, with: action)
-      }
+      self?.modifyModel(action)
     }
   }
 
@@ -57,6 +54,12 @@ final class RootScreenControllerImpl: RootScreenController {
 
   private func modifyEffect(_ effect: HomeScreen.HomeScreenEffect, _ completion: (RootScreenAction) -> Void ) {}
 
+  private func modifyModel(_ action: RootScreenAction) {
+    modelHolder.modify { model in
+      RootScreenEngine.process(&model, with: action)
+    }
+  }
+  
   // MARK: - Actions and Workers
 
   private func setWindow(_ window: UIWindow) {
@@ -68,18 +71,15 @@ final class RootScreenControllerImpl: RootScreenController {
   }
 
   private func presentHomeScreen(on viewController: UIViewController) {
-    let factory = HomeScreenFactoryImpl()
-    let controller = factory.makeController(self)
-    controller.handle(.shouldBePresented(on: viewController))
+    controller = HomeScreenFactoryImpl().makeController(self)
+    controller?.handle(.shouldBePresented(on: viewController))
   }
 }
 
 extension RootScreenControllerImpl: HomeScreenControllerDelegate {
   func handle(_ effect: HomeScreen.HomeScreenEffect) {
     modifyEffect(effect) { [weak self] action in
-      self?.modelHolder.modify { model in
-        RootScreenEngine.process(&model, with: action)
-      }
+      self?.modifyModel(action)
     }
   }
 }

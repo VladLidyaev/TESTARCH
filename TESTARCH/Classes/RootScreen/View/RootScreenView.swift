@@ -15,16 +15,6 @@ protocol RootScreenView {
 final class RootScreenViewImpl: UIViewController, RootScreenView {
   weak var controller: RootScreenInternalController?
 
-  init() {
-    super.init(nibName: nil, bundle: nil)
-    setup()
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     controller?.handle(.presentChild(on: self))
@@ -41,9 +31,5 @@ final class RootScreenViewImpl: UIViewController, RootScreenView {
     case .presentedChild:
       break
     }
-  }
-
-  private func setup() {
-    modalPresentationStyle = .fullScreen
   }
 }

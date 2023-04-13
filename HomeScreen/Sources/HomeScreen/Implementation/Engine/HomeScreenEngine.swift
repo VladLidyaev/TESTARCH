@@ -9,7 +9,9 @@ import UIKit
 
 enum HomeScreenAction {
   case shouldBePresented(on: UIViewController)
-  case presented
+  case fetchingNews
+  case successFetchedNews(NewsModel)
+  case failureFetchedNews
 }
 
 enum HomeScreenEngine {
@@ -20,10 +22,13 @@ enum HomeScreenEngine {
    switch action {
    case .shouldBePresented(let controller):
      model = .presenting(on: controller)
-     return .none
-   case .presented:
-     model = .presented
-     return .none
+   case .fetchingNews:
+     model = .loading
+   case .successFetchedNews(let newsModel):
+     model = .data(newsModel)
+   case .failureFetchedNews:
+     model = .error
    }
+   return .none
  }
 }

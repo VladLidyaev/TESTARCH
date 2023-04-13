@@ -9,9 +9,21 @@ import UIKit
 
 enum HomeScreenModel {
   static var initial: HomeScreenModel = .idle
+
   case idle
   case presenting(on: UIViewController)
-  case presented
+  case loading
+  case data(NewsModel)
+  case error
+}
+
+struct NewsModel: Codable {
+  let articles: [NewsItemModel]
+
+  struct NewsItemModel: Codable {
+    let title: String
+    let url: URL
+  }
 }
 
 protocol HomeScreenModelHolder {
@@ -29,7 +41,12 @@ final class HomeScreenModelHolderImpl: HomeScreenModelHolder {
   }
 
   func modify(_ action: (inout HomeScreenModel) -> ()) {
-    defer { view.update(model: model) }
+    defer {
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        self.view.update(model: self.model)
+      }
+    }
     action(&model)
   }
 }
