@@ -9,11 +9,10 @@ import Foundation
 
 final class HomeScreenModelHolder {
   private var view: HomeScreenView
-  private var model: HomeScreenModel
+  private var model: HomeScreenModel = .initial
 
   init(view: HomeScreenView) {
     self.view = view
-    model = HomeScreenModel()
   }
 
   func modify(_ action: (inout HomeScreenModel) -> ()) {

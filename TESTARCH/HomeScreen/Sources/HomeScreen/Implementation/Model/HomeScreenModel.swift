@@ -7,6 +7,9 @@
 
 import Foundation
 
-struct HomeScreenModel {
-  init() {}
+enum HomeScreenModel {
+  static var initial: HomeScreenModel = .idle
+
+  case idle
+  case value(Int)
 }

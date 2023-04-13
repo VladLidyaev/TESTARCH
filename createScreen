@@ -1,0 +1,4 @@
+#!/bin/bash
+
+read -p "Enter screen name: " screen_name
+echo "2 Screen name is $screen_name"

@@ -1,0 +1,14 @@
+
+[VIEW]
+[CONTROLLER]
+[ENGINE]
+[MODEL]
+[MODELHOLDER]
+
+[EFFECT]
+[ACTION]
+
+
+1. Создаем HomeScreenExternalController через HomeScreenControllerDelegate
+2. 
+
