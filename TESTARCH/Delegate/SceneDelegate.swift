@@ -10,7 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-  var rootController: RootController?
+  var rootScreenController: RootScreenController?
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.windowScene = windowScene
     window?.makeKeyAndVisible()
 
-    rootController = RootFactoryImpl().makeController()
-    rootController?.handle(.shouldBePresented(on: window!))
+    rootScreenController = RootScreenFactoryImpl().makeController()
+    rootScreenController?.handle(.shouldBePresented(on: window!))
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {}
